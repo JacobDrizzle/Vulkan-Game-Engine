@@ -1,5 +1,8 @@
 #include "tve_window.h"
 
+// std
+#include <stdexcept>
+
 namespace tve {
 
 	TveWindow::TveWindow(int w, int h, std::string name) : width{w}, height{h}, windowName{name} {
@@ -17,6 +20,12 @@ namespace tve {
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
 		window = glfwCreateWindow(width, height, windowName.c_str(), nullptr, nullptr);
+	}
 
+	void TveWindow::createWindowSurface(VkInstance instance, VkSurfaceKHR* surface) {
+
+		if (glfwCreateWindowSurface(instance, window, nullptr, surface) != VK_SUCCESS) {
+			throw std::runtime_error("failed to craete window surface");
+		}
 	}
 }
